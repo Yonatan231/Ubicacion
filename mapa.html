@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubicación Precisa</title>
+</head>
+<body>
+
+    <button onclick="obtenerUbicacion()">Ver mi ubicación precisa</button>
+
+    <script>
+        function obtenerUbicacion() {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        let lat = position.coords.latitude;
+                        let lon = position.coords.longitude;
+                        let precision = position.coords.accuracy; // Precisión en metros
+                        
+                        alert(`Ubicación obtenida:\nLatitud: ${lat}\nLongitud: ${lon}\nPrecisión: ${precision} metros`);
+
+                        let url = `https://www.google.com/maps?q=${lat},${lon}`;
+                        window.open(url, "_blank"); // Abre en una nueva pestaña
+                    },
+                    function(error) {
+                        alert("Error obteniendo la ubicación: " + error.message);
+                    },
+                    {
+                        enableHighAccuracy: true, // Activa el GPS para mayor precisión
+                        timeout: 10000, // Espera hasta 10 segundos antes de fallar
+                        maximumAge: 0 // No usa caché, obtiene una nueva ubicación
+                    }
+                );
+            } else {
+                alert("Geolocalización no es soportada en este navegador.");
+            }
+        }
+    </script>
+
+</body>
+</html>
+
